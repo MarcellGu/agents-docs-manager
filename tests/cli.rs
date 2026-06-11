@@ -2,6 +2,7 @@ use std::fs;
 use std::path::Path;
 
 use assert_cmd::Command;
+use predicates::prelude::PredicateBooleanExt;
 use tempfile::TempDir;
 
 struct TestRepo {
@@ -87,6 +88,17 @@ fn help_uses_adm_command() {
             "Sync the managed docs index to AGENTS.md",
         ))
         .stdout(predicates::str::contains("docs"));
+}
+
+#[test]
+fn namespace_create_help_hides_unsupported_regex_option() {
+    let mut command = Command::cargo_bin("adm").unwrap();
+    command
+        .args(["namespace", "create", "--help"])
+        .assert()
+        .success()
+        .stdout(predicates::str::contains("Usage: adm namespace create"))
+        .stdout(predicates::str::contains("--document-name-regex").not());
 }
 
 #[test]

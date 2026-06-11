@@ -186,7 +186,7 @@ pub enum NamespaceAction {
     #[command(about = "Create a namespace")]
     Create {
         namespace_name: String,
-        #[arg(long)]
+        #[arg(long, hide = true)]
         document_name_regex: Option<String>,
     },
     #[command(about = "List documents grouped by namespace")]
